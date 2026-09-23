@@ -16,26 +16,53 @@ Portfolio monorepo for the 八斗 AI大模型 / Agent course: small, related LLM
 
 Later stages land as `projects/03-…`.
 
-## Setup / 环境（一次装好）
+## Setup / 新建环境（根目录一次安装）
+
+在仓库**根目录**创建虚拟环境并安装依赖（不要进到某个 `projects/…` 里再装一份）：
 
 ```bash
 git clone https://github.com/SiYangming/llm-lab.git
 cd llm-lab
+
+# 1) 创建虚拟环境（文件夹名建议就叫 venv）
 python3 -m venv venv
-source venv/bin/activate
+
+# 2) 激活
+source venv/bin/activate          # macOS / Linux
+# Windows PowerShell:
+#   .\venv\Scripts\Activate.ps1
+# Windows cmd:
+#   venv\Scripts\activate.bat
+
+# 3) 安装依赖
+pip install -U pip
 pip install -r requirements.txt
-# optional tests:
-# pip install -r requirements-dev.txt
+
+# 可选：跑项目 2 单测时再装
+pip install -r requirements-dev.txt
 ```
 
-Each project still has its own `.env.example`（密钥与路由不同，不合并）.
+激活成功后，命令行前面会出现 `(venv)`。
+
+以后每次新开终端：
+
+```bash
+cd llm-lab
+source venv/bin/activate   # Windows 见上
+```
+
+退出虚拟环境：`deactivate`。
+
+各项目仍使用自己的 `.env.example`（密钥与路由不同，不合并到根目录）。
 
 ## Run / 运行
+
+先复制并填写对应项目的 `.env`：
 
 ```bash
 # Project 01
 cp projects/01-streaming-chat/.env.example projects/01-streaming-chat/.env
-# edit .env, then:
+# 编辑 .env 填入 API Key，然后：
 PYTHONPATH=projects/01-streaming-chat python -m src.chat
 
 # Project 02
@@ -43,15 +70,20 @@ cp projects/02-failover-chat/.env.example projects/02-failover-chat/.env
 PYTHONPATH=projects/02-failover-chat python -m src.chat
 ```
 
-Or `cd` into the project folder and run `python -m src.chat` with the same venv activated from the repo root.
+也可以 `cd` 进项目目录后执行 `python -m src.chat`（需已在根目录激活同一个 `venv`）。
 
-## Tests / 测试
+## Tests / 测试（项目 2）
 
 ```bash
+cd llm-lab
 source venv/bin/activate
-pip install -r requirements-dev.txt
+pip install -r requirements-dev.txt   # 若尚未安装
 PYTHONPATH=projects/02-failover-chat pytest -q projects/02-failover-chat/tests
 ```
+
+期望输出：`3 passed`。
+
+真机故障转移演示：正常对话尾标为 `[primary]`；把 `.env` 里 `PRIMARY_BASE_URL` 改成无效地址后重启，应切到 `[fallback]`；对话里输入 `/status` 可查看熔断状态。
 
 ## Resume / 简历写法
 
