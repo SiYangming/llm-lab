@@ -18,7 +18,7 @@ Later stages land as `projects/03-…`.
 
 ## Setup / 新建环境（根目录一次安装）
 
-在仓库**根目录**创建虚拟环境并安装依赖（不要进到某个 `projects/…` 里再装一份）：
+在仓库**根目录**创建虚拟环境并安装依赖（`venv` 放在根目录，不要建成 `projects/venv`；也不要进到某个 `projects/…` 里再装一份）：
 
 ```bash
 git clone https://github.com/SiYangming/llm-lab.git
@@ -74,16 +74,34 @@ PYTHONPATH=projects/02-failover-chat python -m src.chat
 
 ## Tests / 测试（项目 2）
 
+在仓库**根目录**、已激活 `venv` 的前提下：
+
 ```bash
-cd llm-lab
+cd ~/GitHub/llm-lab   # 换成你的本地路径
 source venv/bin/activate
-pip install -r requirements-dev.txt   # 若尚未安装
-PYTHONPATH=projects/02-failover-chat pytest -q projects/02-failover-chat/tests
+pip install -r requirements.txt -r requirements-dev.txt
+PYTHONPATH=projects/02-failover-chat python -m pytest -q projects/02-failover-chat/tests
 ```
 
-期望输出：`3 passed`。
+期望输出：
 
-真机故障转移演示：正常对话尾标为 `[primary]`；把 `.env` 里 `PRIMARY_BASE_URL` 改成无效地址后重启，应切到 `[fallback]`；对话里输入 `/status` 可查看熔断状态。
+```text
+...                                                                                                               [100%]
+3 passed in 0.64s
+```
+
+务必用 `python -m pytest`，不要直接敲 `pytest`。直接敲可能用到 Homebrew/系统里的 pytest（例如 `/opt/homebrew/bin/pytest`），从而出现 `ModuleNotFoundError: No module named 'openai'`。
+
+自检：
+
+```bash
+which python   # 应类似 .../llm-lab/venv/bin/python
+which pytest   # 若指向 /opt/homebrew/bin/pytest，改用 python -m pytest
+```
+
+虚拟环境应建在**仓库根目录**的 `venv/`，不要建在 `projects/venv`。
+
+真机故障转移演示：正常对话尾标为 `[primary]`；把 `.env` 里主源 Base URL 改成无效地址后重启，应切到 `[fallback]`；对话里输入 `/status` 可查看熔断状态。
 
 ## Resume / 简历写法
 
