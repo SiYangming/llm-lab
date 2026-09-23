@@ -138,7 +138,21 @@ Assistant: Hello! How can I help you today?
 
 ## Resume / 简历写法
 
-One repo, numbered labs, shared tooling at root, each project folder focused on the idea being demonstrated.
+### 项目 2（故障转移 / 熔断）— 可直接粘贴
+
+中文：
+
+- 基于 OpenAI 兼容 API 实现流式对话的主备故障转移：错误分类（瞬时 vs 致命）、指数退避重试、按 provider 的 closed/open/half-open 熔断器，主源不可用时自动切到 fallback 并保持同一套 CLI 体验。
+- 用单元测试覆盖熔断状态机与错误分类；真机验证 primary / fallback 路由（回复尾标 `[primary]` / `[fallback]`）。
+
+English:
+
+- Built streaming LLM chat with primary→fallback failover: classified transient vs fatal errors, exponential backoff with jitter, and a per-provider closed/open/half-open circuit breaker while keeping one CLI UX.
+- Covered the breaker and error taxonomy with unit tests; demonstrated live routing via `[primary]` / `[fallback]` response tags (see `projects/02-failover-chat/docs/screenshots/`).
+
+### 仓库整体
+
+One monorepo (`llm-lab`), numbered labs, shared tooling at root, each project folder focused on one idea.
 
 ## License
 

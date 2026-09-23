@@ -44,23 +44,36 @@ python -m src.chat
 
 Commands: `/exit`, `/clear`, `/status` (show circuit state).
 
-## Demo ideas / 演示思路
+## Failover 截图怎么拍 / How to capture failover
 
-- Happy path: only primary configured → same as Project 1
-- Failover: point `PRIMARY_BASE_URL` at a dead host, keep fallback valid → reply tagged `[fallback]`
-- Circuit: hammer a bad primary until `/status` shows `open`, then watch it skip primary
+1. `.env` 里 primary、fallback 都填有效密钥；跑通后对话末尾应是 `[primary]`（已有 `docs/screenshots/chat-primary.png`）。
+2. 把 primary 的 Base URL 改成无效地址（例如 `https://127.0.0.1:9`），保存后重启：
+   `PYTHONPATH=projects/02-failover-chat python -m src.chat`
+3. 再聊一句，末尾应为 `[fallback]`；可选输入 `/status` 看熔断状态。截一张含 `[fallback]` 的终端图（已有 `docs/screenshots/chat-fallback.png`）。
+4. 简历/作品集里两张图并排：左 primary、右 fallback，说明「主源挂了仍可对话」。
 
 ## Tests / 测试
 
+在仓库根目录：
+
 ```bash
-pip install pytest
-pytest -q
+source venv/bin/activate
+pip install -r ../../requirements-dev.txt   # 或根目录 requirements-dev.txt
+PYTHONPATH=projects/02-failover-chat python -m pytest -q projects/02-failover-chat/tests
+# 期望：3 passed
 ```
 
-## Resume bullet / 简历要点
+## Resume bullet / 简历要点（CN / EN）
 
-- Implemented LLM client failover with error classification, bounded retries, and a closed/open/half-open circuit breaker.
-- Kept a single streaming chat UX while routing across primary/fallback OpenAI-compatible providers.
+中文：
+
+- 实现 LLM 流式对话的主备故障转移：瞬时/致命错误分类、指数退避 + jitter 重试、closed→open→half-open 熔断；主源故障时自动切 fallback，CLI 体验不变。
+- 单测覆盖熔断与错误分类；真机截图证明 `[primary]` / `[fallback]` 路由（见 `docs/screenshots/`）。
+
+English:
+
+- Implemented streaming LLM client failover with error classification, bounded retries (backoff + jitter), and a closed/open/half-open circuit breaker across OpenAI-compatible providers.
+- Unit-tested breaker/error paths; live demos tagged `[primary]` / `[fallback]` (screenshots in `docs/screenshots/`).
 
 ## License
 
