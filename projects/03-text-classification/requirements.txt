@@ -1,0 +1,6 @@
+# Project 03 extras (install on top of repo-root requirements.txt)
+torch>=2.1.0
+transformers>=4.40.0
+scikit-learn>=1.3.0
+pandas>=2.0.0
+tqdm>=4.66.0

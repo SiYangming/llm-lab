@@ -13,6 +13,7 @@ Portfolio monorepo for the 八斗 AI大模型 / Agent course: small, related LLM
 | `LICENSE` / `.gitignore` | Repo-wide |
 | `projects/01-streaming-chat` | Streaming chat CLI |
 | `projects/02-failover-chat` | Retry + circuit breaker + failover |
+| `projects/03-text-classification` | Text classification: BERT fine-tune vs LLM zero/few-shot |
 
 Later stages land as `projects/03-…`.
 
@@ -135,6 +136,20 @@ Assistant: Hello! How can I help you today?
 ![chat via fallback](projects/02-failover-chat/docs/screenshots/chat-fallback.png)
 
 命令：`/exit` 退出，`/clear` 清空上下文，`/status` 查看熔断状态。
+
+
+## Project 03 quick start
+
+```bash
+pip install -r projects/03-text-classification/requirements.txt
+cp projects/03-text-classification/.env.example projects/03-text-classification/.env
+PYTHONPATH=projects/03-text-classification python -m src.train_bert
+# after LLM_API_KEY set:
+PYTHONPATH=projects/03-text-classification python -m src.infer_llm
+PYTHONPATH=projects/03-text-classification python -m src.compare
+```
+
+Details: [projects/03-text-classification/README.md](projects/03-text-classification/README.md).
 
 ## Resume / 简历写法
 
