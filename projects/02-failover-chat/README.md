@@ -65,3 +65,30 @@ pytest -q
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+## Demo（已验证）
+
+```bash
+# 在仓库根目录
+source venv/bin/activate
+PYTHONPATH=projects/02-failover-chat python -m pytest -q projects/02-failover-chat/tests
+# ... 3 passed in 0.61s
+
+PYTHONPATH=projects/02-failover-chat python -m src.chat
+```
+
+```text
+LLM failover chat | providers=[primary:deepseek-chat, fallback:deepseek-chat]
+Commands: /exit /clear /status
+
+You: hi
+Assistant: ...
+  [primary]
+```
+
+主源失败时末尾变为 `[fallback]`。截图：
+
+![primary](docs/screenshots/chat-primary.png)
+
+![fallback](docs/screenshots/chat-fallback.png)
+

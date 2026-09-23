@@ -83,11 +83,11 @@ pip install -r requirements.txt -r requirements-dev.txt
 PYTHONPATH=projects/02-failover-chat python -m pytest -q projects/02-failover-chat/tests
 ```
 
-期望输出：
+期望输出示例（已验证）：
 
 ```text
-...                                                                                                               [100%]
-3 passed in 0.64s
+...                                                                                         [100%]
+3 passed in 0.61s
 ```
 
 务必用 `python -m pytest`，不要直接敲 `pytest`。直接敲可能用到 Homebrew/系统里的 pytest（例如 `/opt/homebrew/bin/pytest`），从而出现 `ModuleNotFoundError: No module named 'openai'`。
@@ -102,6 +102,39 @@ which pytest   # 若指向 /opt/homebrew/bin/pytest，改用 python -m pytest
 虚拟环境应建在**仓库根目录**的 `venv/`，不要建在 `projects/venv`。
 
 真机故障转移演示：正常对话尾标为 `[primary]`；把 `.env` 里主源 Base URL 改成无效地址后重启，应切到 `[fallback]`；对话里输入 `/status` 可查看熔断状态。
+
+## Demo / 成功运行示例（项目 2）
+
+配置好 `projects/02-failover-chat/.env`（primary / fallback）后：
+
+```bash
+cd ~/GitHub/llm-lab
+source venv/bin/activate
+PYTHONPATH=projects/02-failover-chat python -m src.chat
+```
+
+启动后类似：
+
+```text
+LLM failover chat | providers=[primary:deepseek-chat, fallback:deepseek-chat]
+Commands: /exit /clear /status
+```
+
+正常对话走主源，回复末尾带 `[primary]`：
+
+```text
+You: hi
+Assistant: Hello! How can I help you today?
+  [primary]
+```
+
+主源不可用时自动切到备用，末尾为 `[fallback]`（见截图）：
+
+![chat via primary](projects/02-failover-chat/docs/screenshots/chat-primary.png)
+
+![chat via fallback](projects/02-failover-chat/docs/screenshots/chat-fallback.png)
+
+命令：`/exit` 退出，`/clear` 清空上下文，`/status` 查看熔断状态。
 
 ## Resume / 简历写法
 
