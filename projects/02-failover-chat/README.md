@@ -1,6 +1,6 @@
 > Part of the [llm-lab](https://github.com/SiYangming/llm-lab) monorepo (八斗 AI course).
 >
-> 本目录属于 monorepo [llm-lab](https://github.com/SiYangming/llm-lab)。
+> 本目录属于 monorepo [llm-lab](https://github.com/SiYangming/llm-lab)。共享依赖在仓库根目录的 `requirements.txt` / `LICENSE` / `.gitignore`。
 
 # llm-failover-chat
 
@@ -25,11 +25,11 @@ Project 1 proves you can call an LLM. Project 2 proves the call still works when
 ## Setup / 本地环境
 
 ```bash
-git clone https://github.com/SiYangming/llm-failover-chat.git
-cd llm-failover-chat
+git clone https://github.com/SiYangming/llm-lab.git
+cd llm-lab/projects/02-failover-chat
 python3 -m venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+pip install -r ../../requirements.txt  # from this folder; or install once at repo root
 cp .env.example .env
 ```
 

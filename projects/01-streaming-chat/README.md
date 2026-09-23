@@ -1,6 +1,6 @@
 > Part of the [llm-lab](https://github.com/SiYangming/llm-lab) monorepo (八斗 AI course).
 >
-> 本目录属于 monorepo [llm-lab](https://github.com/SiYangming/llm-lab)。
+> 本目录属于 monorepo [llm-lab](https://github.com/SiYangming/llm-lab)。共享依赖在仓库根目录的 `requirements.txt` / `LICENSE` / `.gitignore`。
 
 # deepseek-streaming-chat
 
@@ -39,11 +39,11 @@ You: /exit
 建议在本地新建虚拟环境再跑，依赖干净、可复现，也方便拍终端截图放进简历仓库。不必使用 Docker。
 
 ```bash
-git clone https://github.com/SiYangming/deepseek-streaming-chat.git
-cd deepseek-streaming-chat
+git clone https://github.com/SiYangming/llm-lab.git
+cd llm-lab/projects/01-streaming-chat
 python3 -m venv venv
 source venv/bin/activate          # Windows: venv\Scripts\activate
-pip install -r requirements.txt
+pip install -r ../../requirements.txt  # from this folder; or install once at repo root
 cp .env.example .env
 ```
 
